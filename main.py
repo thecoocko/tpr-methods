@@ -114,7 +114,7 @@ def modalProbOfDis():
 
 def minimumEntropy():
     criterion = np.zeros(np.size(matrix,1))
-    prod = []
+    prod = np.zeros(np.size(matrix,1))
     prodlog = np.zeros(np.size(matrix,1))
     sum = 0
           
@@ -122,15 +122,18 @@ def minimumEntropy():
         
         for i in range(np.size(matrix,1)):
             for j in range(np.size(matrix,0)):
-                
-               sum = sum + ((p[i]*matrix[j][i])/bayes()[i])*np.log(p[i]*matrix[j][i])/bayes()[i]
+                prod[i] = (p[i]*matrix.transpose()[i][j])/bayes()[i]
+                if prod[i]==0:
+                    prodlog[i]=0
+                else:
+                    prodlog[i]=np.log((p[i]*matrix.transpose()[i][j])/bayes()[i])
+            criterion[i] = (-1)*(prod[i]+prodlog[i])
             
-            prod.append((-1)*sum)   
   
     except Exception as error:
         return f"Error: {error}"
 
-    return prod
+    return criterion
 
 def combinedMethod():
 
